@@ -1,6 +1,7 @@
 #include "screen.h"
 #include "PowerUps/health.h"
 #include "PowerUps/speed.h"
+#include "PowerUps/power.h"
 
 void screenElements::setCoins(int coins)
 {
@@ -34,6 +35,11 @@ void screenElements::addPowerUp(PowerUpType type, int x, int y, int width, int h
 		power = new Speed(x, y, width, height, type, cost, stationLevel);
 		powerUpsArray.push_back(power);
 		break;
+	case powerType:
+		power = new Power(x, y, width, height, type, cost, stationLevel);
+		powerUpsArray.push_back(power);
+		break;
+
 	}
 }
 

@@ -4,6 +4,7 @@
 #include "world.h"
 #include "screen.h"
 #include "entityView.h"
+#include "Particles/particleView.h"
 #include "screenView.h"
 #include "textures.h";
 #include "settings.h"
@@ -14,6 +15,7 @@ private:
 	World world;
 	screenElements screen;
 	vector<EntityView* > views;
+	vector<ParticleView* > particleViews;
 
 public:
 	void gameLoop();

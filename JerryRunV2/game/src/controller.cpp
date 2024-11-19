@@ -15,7 +15,7 @@ int viewportWidth = 0;
 int viewportHeight = 0;
 int viewportX = 0;
 int viewportY = 0;
-int viewportDrawX = 0;
+int viewportDrawX;
 int viewportDrawY = 0;
 
 void Controller::gameLoop() {
@@ -30,25 +30,29 @@ void Controller::gameLoop() {
 
 
     PubSub::subscribe("entity", this);
+    PubSub::subscribe("particle", this);
+    PubSub::subscribe("action", this);
     PubSub::subscribe("player", this);
 
-    InitWindow(GetScreenWidth(), GetScreenHeight(), "JerryRun");
-    SetTargetFPS(60);
-    ToggleFullscreen();
-  
+   // InitWindow(GetScreenWidth(), GetScreenHeight(), "JerryRun");
+    InitWindow(700, 500, "JerryRun");
+    SetTargetFPS(GetMonitorRefreshRate(GetCurrentMonitor()));
+   // ToggleFullscreen();
     
    
 
   
 
-   
-    world.addPlayer((worldWidth / 2)-8, (worldHeight/ 2)-8, 16, 16, jerry, "Jerry", 40);
-    screen.addPowerUp(healthType, 10, 10, 32, 32, 10, 1);
-    screen.addPowerUp(speedType, 10, 200, 32, 32, 10, 1);
-
     ScreenView screenView(screen.getPowerUps());
     viewportWidth = GetScreenWidth();
     viewportHeight = GetScreenHeight();
+    world.addPlayer((worldWidth / 2)-8, (worldHeight/ 2)-8, 16, 16, jerry, "Jerry", 40);
+    screen.addPowerUp(healthType, 10, 10, 32, 32, 10, 1);
+    screen.addPowerUp(speedType, 10, 200, 32, 32, 10, 1);
+    screen.addPowerUp(powerType, 10, 390, 32, 32, 10, 1);
+
+  
+   
     while (!WindowShouldClose() && world.getAliveState())
     {
         world.EnemyCount(10);
@@ -90,11 +94,14 @@ void Controller::gameLoop() {
         world.tick();
 
         BeginDrawing();
-        screenView.drawBackground(viewportX, viewportY, viewportDrawX, viewportDrawY);
+        screenView.drawBackground(viewportX, viewportY, viewportWidth, viewportHeight);
 
         // Draw the views
         for (EntityView* view : views)
             view->draw(viewportX, viewportY, viewportDrawX, viewportDrawY,viewportWidth, viewportHeight);
+        for (ParticleView* pView : particleViews) {
+            pView->draw();
+        }
 
         screenView.draw(world.getCoins(), world.getWorldLevel(), world.getDeletedEnemiesCount(), viewportX, viewportY, viewportDrawX, viewportDrawY, viewportWidth, viewportHeight);
 
@@ -119,11 +126,20 @@ void Controller::gameLoop() {
 
 void Controller::receiveMessage(string channel, string message, void* data)
 {
+    if (channel == "action" && message == "attack") {
+        Entity* entity = (Entity*)data;
+        world.addParticle(attackParticle, entity->getXPos(), entity->getYPos(), entity, 180);
+    }
     if (channel == "player" && message == "location")
     {
         Vector2* position = (Vector2*)data;
-        viewportX = position->x - viewportWidth / 2;
-        viewportY = position->y - viewportHeight / 2;
+        if ((position->x - viewportWidth / 2) >=0 && position->x + viewportWidth / 2 <= worldWidth){
+            viewportX = position->x - viewportWidth / 2;
+            
+        }
+        if ((position->y - viewportHeight / 2) >= 0 && position->y + viewportHeight / 2 <= worldHeight) {
+            viewportY = position->y - viewportHeight / 2;
+        }
     }
     if (channel == "entity" && message == "hit") {
         Entity* entity = (Entity*)data;
@@ -137,6 +153,14 @@ void Controller::receiveMessage(string channel, string message, void* data)
         EntityView* view = new EntityView((Entity*)data);
         views.push_back(view);
     }
+
+    if (channel == "particle" && message == "new")
+    {
+        // Create a view for the entity
+        ParticleView* view = new ParticleView((Particles*)data);
+        particleViews.push_back(view);
+    }
+
 
     if (channel == "entity" && message == "delete")
     {

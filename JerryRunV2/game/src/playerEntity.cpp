@@ -14,6 +14,8 @@ PlayerEntity::PlayerEntity(float x, float y, int width, int height, EntityType t
 	PubSub::subscribe("action", this);
 	PubSub::subscribe("stations", this);
 	PubSub::subscribe("power_up", this);
+	Vector2 position = { getXPos(), getYPos() };
+	PubSub::publish("player", "location", &position);
 }
 PlayerEntity::~PlayerEntity() {
 	PubSub::unsubscribe("action", this);
@@ -77,6 +79,9 @@ void PlayerEntity::receiveMessage(string channel, string message, void* data){
 			break;
 		case speedType:
 			PubSub::publish("power_up", "speed", this);
+			break;
+		case powerType:
+			PubSub::publish("power_up", "power", this);
 		}
 	}
 	if (channel == "action" && message == "player") {

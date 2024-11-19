@@ -11,20 +11,24 @@ ScreenView::ScreenView(vector<PowerUps*> powerUpsArray)
     this->powerUpsArray = powerUpsArray;
 }
 
-void ScreenView::drawBackground(int viewportX, int viewportY, int viewportDrawX, int viewportDrawY) {
+void ScreenView::drawBackground(int viewportX, int viewportY, int viewportWidth, int viewportHeight) {
+
+
     // Source rectangle: part of the texture to be drawn (the specific frame)
-    Rectangle srcRec = { 0,0,width,height };
+    Rectangle srcRec = {viewportX, viewportY,viewportWidth,viewportHeight};
 
 
     // Destination rectangle: where to draw the sprite on screen (with scaling)
-    Rectangle destRec = { viewportDrawX - viewportX,viewportDrawY - viewportY,width, height };
+    Rectangle destRec = {0,0, viewportWidth, viewportHeight};
+
 
 
     // Draw the texture region to the screen using the destination rectangle
     //Draw Player Name
 
     //Draw Entity Texture
-    DrawTexturePro(background, srcRec, destRec, { 0, 0 }, 0.0f, WHITE);
+    DrawTexturePro(background, srcRec, destRec, {0,0}, 0.0f, WHITE);
+
 }
 void ScreenView::draw(int coins, int worldLevel, int deletedEnemies, int viewportX, int viewportY, int viewportDrawX, int viewportDrawY,  int viewportWidth, int viewportHeight) {
 
@@ -32,8 +36,8 @@ void ScreenView::draw(int coins, int worldLevel, int deletedEnemies, int viewpor
     string coinText = "Coins: " + std::to_string(coins);
     string levelText = "Level " + std::to_string(worldLevel);
     string enemiesKilled = "Enemies Killed: " + std::to_string(deletedEnemies);
-    DrawText(coinText.c_str(), (viewportWidth)-300, 10, 50, BROWN);
-    DrawText(levelText.c_str(), (viewportWidth)-300, 60, 30, GRAY);
+    DrawText(levelText.c_str(), (viewportWidth)-300, 10, 50, BROWN);
+    DrawText(coinText.c_str(), (viewportWidth)-300, 60, 30, GRAY);
     DrawText(enemiesKilled.c_str(), (viewportWidth)-300, 90, 30, {20,20,20,255});
 
     //Drawing powerups

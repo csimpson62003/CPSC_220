@@ -5,7 +5,8 @@
 
 map<PowerUpType, string> textureArray = {
 	{healthType, "resources/HealthIcon.png"},
-	{speedType, "resources/SpeedIcon.png"}
+	{speedType, "resources/SpeedIcon.png"},
+	{powerType, "resources/PowerIcon.png"}
 };
 
 PowerUps::PowerUps(PowerUpType put, float xPosition, float yPosition, float width, float height)
@@ -31,14 +32,7 @@ float PowerUps::getWidth()
 {
 	return this->width;
 }
-string PowerUps::getName()
-{
-	switch (this->type) {
-	case healthType:
-		return "Health";
 
-	}
-}
 Texture2D PowerUps::getTexture() {
 	return this->texture;
 }

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "entity.h"
+#include "Particles/particles.h"
 using namespace std;
 
 enum userAction { CreateEnemy, PlayerUp, PlayerDown, PlayerRight, PlayerLeft, PlayerHit};
@@ -11,6 +12,7 @@ class World
 {
 private:
 	vector<Entity*> entities;
+	vector<Particles*> particles;
 	vector<Entity*> collisions;
 	vector<Entity*> deletions;
 	void checkCollision(Entity* entity, Entity* entity2);
@@ -37,6 +39,7 @@ public:
 	int getCoins();
 	bool getAliveState();
 	void setAliveState(bool stillAlive);
+	void addParticle(ParticleType particleType, float xCoordinate, float yCoordinate, Entity* entity, float duration);
 };
 
 #endif

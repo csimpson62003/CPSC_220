@@ -29,6 +29,7 @@ private:
 	EntityType type;
 	EntityFacing facing;
 	bool moving;
+
 	string entityName;
 	int level=-1;
 	float power;
@@ -60,7 +61,7 @@ public:
 	int getWidth();
 	int getHeight();
 	EntityType getType();
-	EntityFacing getFacing();
+	virtual EntityFacing getFacing();
 	bool getMoving();
 
 	void setXPos(float x);

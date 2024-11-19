@@ -14,7 +14,7 @@ private:
 
 public:
 	ScreenView(vector<PowerUps*> powerUpsArray);
-	void drawBackground(int viewportX, int viewportY, int viewportDrawX, int viewportDrawY);
+	void drawBackground(int viewportX, int viewportY, int viewportWidth, int viewportHeight);
 	void draw(int coins, int worldLevel, int deletedEnemies, int viewportX, int viewportY, int viewportDrawX, int viewportDrawY, int viewportWidth, int viewportHeight);
 	void deathScreenDraw(int worldLevel, int deletedEnemies, int viewportDrawX, int viewportDrawY, int viewportWidth, int viewportHeight);
 };

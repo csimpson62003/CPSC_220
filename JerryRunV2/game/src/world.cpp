@@ -4,6 +4,7 @@
 #include "world.h"
 #include "playerentity.h"
 #include "enemyEntity.h"
+#include "Particles/attackParticles.h"
 #include "pubsub.h"
 #include "raylib.h"
 
@@ -124,6 +125,17 @@ bool World::getAliveState()
 }
 void World::setAliveState(bool stillAlive) {
 	this->stillAlive = stillAlive;
+}
+void World::addParticle(ParticleType particleType, float xCoordinate, float yCoordinate, Entity* entity, float duration)
+{
+	Particles* particle;
+	switch (particleType) {
+	case attackParticle:
+		particle = new AttackParticles(particleType, xCoordinate, yCoordinate, entity, duration);
+		break;
+	}
+	PubSub::publish("particle", "new", entity);
+	this->particles.push_back(particle);
 }
 void World::checkCollision(Entity* entity, Entity* entity2) {
 	//This code will make it so dead enemies can not hurt me, until they are removed from the game.

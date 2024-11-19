@@ -21,23 +21,6 @@ map<EntityType, SpriteSheetInfo> spriteMapping = {
     {portal, {"resources/GlowingWisp.png", 4, {
         {right, 0}}
     }},
-
-    //extend range station
-    {extendedRangeStation, {"resources/ExtendedRange.png", 4, {
-        {right, 0}}
-    }},
-    //Healing station
-    {healingStation, {"resources/HealingStation.png", 4, {
-        {right, 0}}
-    }},
-    //Power Station
-    {powerStation, {"resources/PowerStation.png", 4, {
-        {right, 0}}
-    }},
-    //Speed Station
-    {speedStation, {"resources/Speed.png", 4, {
-        {right, 0}}
-    }},
     {
 enemy, {"resources/zombie.png", 4, {
    {right, 2},
